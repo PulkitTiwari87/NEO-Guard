@@ -1,0 +1,53 @@
+# docker-compose.yml
+# NEO-Guard Development Environment
+#
+# STATUS: PLACEHOLDER -- services are NOT implemented yet.
+# This file documents the planned service architecture for future implementation.
+
+version: "3.9"
+
+services:
+  # -- Backend API --
+  # PLANNED: FastAPI application serving the inference API.
+  # Will be implemented in Phase 2 (Claude Code).
+  #
+  # backend:
+  #   build: ./backend
+  #   ports:
+  #     - "8000:8000"
+  #   env_file: .env
+  #   depends_on:
+  #     - db
+
+  # -- PostgreSQL --
+  # PLANNED: Primary data store for NEO records, predictions,
+  # model metadata, and experiment tracking.
+  #
+  # db:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_DB: neoguard
+  #     POSTGRES_USER: neoguard
+  #     POSTGRES_PASSWORD: changeme
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+  # -- Frontend --
+  # PLANNED: React + Vite frontend.
+  # Will be implemented in Phase 3 (Antigravity).
+  #
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "5173:5173"
+  #   depends_on:
+  #     - backend
+
+  placeholder:
+    image: alpine
+    command: echo "NEO-Guard services are not yet implemented."
+
+# volumes:
+#   pgdata:
