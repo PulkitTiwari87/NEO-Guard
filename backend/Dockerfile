@@ -14,6 +14,20 @@ RUN pip install -r backend/requirements.txt
 
 COPY ml ml
 COPY backend backend
+COPY docs/EXPERIMENTS.md docs/EXPERIMENTS.md
+
+# Model artifacts (*.joblib) are git-ignored (see .gitignore) and not committed, so train
+# fresh at build time instead (Phase 6 deployment decision, docs/DEPLOYMENT.md). Needs network
+# access to the NASA/JPL APIs during the build. Clears the tracked metadata-only version dirs
+# first (their model.joblib was never committed) so version numbering starts clean and every
+# listed artifact is actually loadable.
+RUN rm -rf ml/artifacts/*/v* \
+    && python -m ml.ingestion \
+    && python -m ml.validation \
+    && python -m ml.preprocessing \
+    && python -m ml.training \
+    && python -m ml.evaluation \
+    && python -m ml.explainability
 
 # Non-root runtime user.
 RUN useradd --system --no-create-home --uid 10001 neoguard
