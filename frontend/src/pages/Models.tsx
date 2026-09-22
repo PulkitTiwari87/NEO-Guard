@@ -128,6 +128,44 @@ export function Models() {
         </p>
       </div>
 
+      {/* Section 18-style scientific summary */}
+      <Card className="p-5">
+        <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-3 text-sm">
+          <div>
+            <dt className="text-[10px] text-muted uppercase tracking-wider">Target</dt>
+            <dd className="text-white/80 mt-0.5">JPL PHA classification</dd>
+          </div>
+          <div>
+            <dt className="text-[10px] text-muted uppercase tracking-wider">Feature scope</dt>
+            <dd className="text-white/80 mt-0.5">Orbital elements only</dd>
+          </div>
+          <div>
+            <dt className="text-[10px] text-muted uppercase tracking-wider">Excluded</dt>
+            <dd className="text-white/80 mt-0.5">H (absolute magnitude), MOID</dd>
+          </div>
+          <div>
+            <dt className="text-[10px] text-muted uppercase tracking-wider">Model status</dt>
+            <dd className="text-yellow-400 mt-0.5">Experimental</dd>
+          </div>
+          <div>
+            <dt className="text-[10px] text-muted uppercase tracking-wider">Primary metric</dt>
+            <dd className="text-white/80 mt-0.5">Test PR-AUC</dd>
+          </div>
+          <div>
+            <dt className="text-[10px] text-muted uppercase tracking-wider">No-skill baseline</dt>
+            <dd className="text-white/80 mt-0.5">Test prevalence (≈1.3%)</dd>
+          </div>
+          <div className="sm:col-span-2 lg:col-span-2">
+            <dt className="text-[10px] text-muted uppercase tracking-wider">Limitations</dt>
+            <dd className="text-white/80 mt-0.5">
+              Not a calibrated probability; subgroup evaluation is only meaningful for the Apollo
+              orbital class; distribution shift between train and test is not fully explained.{' '}
+              <span className="text-muted">See docs/EXPERIMENTS.md and docs/MODEL_CARD.md for details.</span>
+            </dd>
+          </div>
+        </dl>
+      </Card>
+
       {models.length === 0 ? (
         <EmptyState
           title="No models trained yet"

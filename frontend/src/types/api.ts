@@ -120,6 +120,8 @@ export interface Explanation {
 export interface PredictResponse {
   prediction: 0 | 1;
   label: 'potentially_hazardous' | 'not_potentially_hazardous';
+  /** Uncalibrated model score (predict_proba of the positive class). Field name kept for API
+   * compatibility; not demonstrated to be a calibrated probability (docs/EXPERIMENTS.md). */
   probability: number;
   threshold: number;
   model_version: string;

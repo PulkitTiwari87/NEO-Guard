@@ -49,6 +49,122 @@ All six models remain **`experimental`**; none is promoted. `random_forest-v1` i
 because it is best on validation PR-AUC (rule: status first, then validation PR-AUC). Promotion to
 `validated`/`production` requires human/scientific review (`python -m app.cli set-status`).
 
+---
+
+## Distribution shift investigation
+
+> Reproducible via `python -m ml.diagnostics.distribution_shift`; full output
+> `ml/diagnostics/output/distribution_shift.json`. Read-only: it does not retrain or re-split
+> anything (`ml.training`/`ml.preprocessing`/`ml.features` are unchanged).
+
+**Established (directly measured):**
+
+* PHA prevalence falls monotonically: train 7.52% → validation 1.95% → test 1.28% (unchanged from
+  above; this is the same split, not recomputed).
+* Orbit-class composition and prevalence both shift. Apollo (APO), the largest class, alone drops
+  from 11.48% PHA (train, n=17,645) to 3.05% (validation, n=3,442) to 1.87% (test, n=2,998); Amor
+  (AMO) drops from 1.29% to 0.32% to 0.13%. Aten (ATE) and Atira (IEO) are far smaller
+  (train n=2,463 and n=32) and noisier — see the full table in the JSON output.
+* A train-vs-test two-sample Kolmogorov–Smirnov test on each raw orbital feature rejects the
+  "same distribution" null hypothesis (p < 1e-6) for 6 of 7 features — `semi_major_axis_au`
+  (D=0.065, p=3.4e-16), `eccentricity` (D=0.057, p=1.4e-12), `inclination_deg` (D=0.049,
+  p=2.5e-9), `perihelion_distance_au` (D=0.069, p=3.8e-18), `aphelion_distance_au` (D=0.064,
+  p=9.0e-16), `ascending_node_deg` (D=0.043, p=1.7e-7). `argument_of_perihelion_deg` is the one
+  exception: D=0.015, p=0.283 — **not** significantly different between train and test.
+* Prevalence-by-discovery-year (full series in the JSON) declines steadily from the 1990s–2000s
+  (commonly 15–30% in years with meaningful sample size) down to 2.8% (2018), 1.3–1.9% (2020–2026)
+  — consistent with the split-level numbers, not an artefact of the split boundaries.
+
+**INCONCLUSIVE:** the root cause of the prevalence shift — why recent discoveries skew toward
+smaller (non-PHA, H > 22) objects — cannot be established from this dataset alone. It would
+require survey completeness / discovery-effort data (e.g. per-survey magnitude limits over time)
+that is not part of the SBDB snapshot used here. We record that recent objects are measurably
+different (orbit-class mix, per-feature KS tests) without claiming to know *why* discovery
+composition changed.
+
+## Experiment 2: Subgroup / orbital-class evaluation
+
+> Reproducible via `python -m ml.diagnostics.subgroup`; full output
+> `ml/diagnostics/output/subgroup_evaluation.json`. Evaluates the served default model
+> (`random_forest-v1`) read-only, grouped by CNEOS orbital class (SBDB `class`: `IEO`=Atira,
+> `ATE`=Aten, `APO`=Apollo, `AMO`=Amor — the classification JPL already computes, not re-derived
+> here). A subgroup with fewer than 10 positives in a split reports `INSUFFICIENT SAMPLE` instead
+> of a misleading metric; support/positives/prevalence are always reported.
+
+| Split | Orbit class | Support | Positives | Prevalence | Precision | Recall | F1 | PR-AUC | ROC-AUC |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| validation | **Apollo** | 3,442 | 105 | 3.05% | 0.215 | 0.476 | 0.296 | 0.190 | 0.864 |
+| validation | Amor | 1,851 | 6 | 0.32% | INSUFFICIENT SAMPLE | | | | |
+| validation | Aten | 495 | 2 | 0.40% | INSUFFICIENT SAMPLE | | | | |
+| validation | Atira | 2 | 0 | 0% | INSUFFICIENT SAMPLE | | | | |
+| test | **Apollo** | 2,998 | 56 | 1.87% | 0.128 | 0.446 | 0.199 | 0.166 | 0.876 |
+| test | Amor | 1,530 | 2 | 0.13% | INSUFFICIENT SAMPLE | | | | |
+| test | Aten | 484 | 5 | 1.03% | INSUFFICIENT SAMPLE | | | | |
+| test | Atira | 4 | 1 | 25% | INSUFFICIENT SAMPLE | | | | |
+
+**Observation:** only Apollo has enough positives (≥10) in both splits for a meaningful
+per-subgroup metric. Its test PR-AUC (0.166) and ROC-AUC (0.876) are close to the overall test
+figures (0.146 / 0.898) — the model's aggregate performance is not being propped up or masked by
+one dominant subgroup, but this conclusion applies only to Apollo; Amor, Aten and Atira remain
+**INSUFFICIENT SAMPLE** and no claim is made about them individually. Atira (32 objects total in
+the whole dataset) is too small to evaluate at all; its very small counts even in the composition
+table (train 7/32 positive, test 1/4) should not be read as a reliable prevalence estimate.
+
+## Experiment 3: Calibration diagnostic
+
+> Reproducible via `python -m ml.diagnostics.calibration`; full output
+> `ml/diagnostics/output/calibration.json`. Evaluated on **validation**, not test: test is
+> reserved for the single final evaluation per model (`docs/ML_WORKFLOW.md`); validation is
+> already reused for threshold tuning, and reusing it again for this non-selective diagnostic
+> (it does not choose between models or feed back into training) adds no new leakage. This
+> project has no separate calibration split. No calibration transform is fit or applied to the
+> served model — this is read-only.
+
+| Metric | Value |
+|---|---:|
+| Brier score (`random_forest-v1`, validation, n=5,790) | 0.0234 |
+| No-skill Brier score (predict the validation prevalence for everyone) | 0.0191 |
+
+**The model's Brier score is *worse* than the no-skill baseline.** Predicting the constant base
+rate (1.95%) for every object minimises squared error better than the model's actual scores do.
+This is compatible with good *ranking* (ROC-AUC 0.90, PR-AUC 0.18 ≫ no-skill 0.0195) alongside
+poor *calibration*: reliability-curve bins (`strategy="quantile"`, 10 bins) show the model is
+overconfident in its highest-scoring bin — mean predicted probability 27.9% in that bin, observed
+frequency only 13.0% — and near-zero observed frequency in several low/mid bins whose mean
+predicted probability is 1–6%. **Conclusion: `random_forest-v1`'s output is not demonstrated to
+be a calibrated probability.** It is useful for ranking objects relative to each other, not for
+reading as "this object has an X% chance of being a PHA." See the terminology change in
+`docs/API_CONTRACT.md` and the frontend ("Model Score", not "Probability").
+
+## Experiment 4: Definition-reconstruction diagnostic
+
+> **NOT a predictive model. Not used for production, the default model, dashboard predictions,
+> or model selection.** Reproducible via `python -m ml.diagnostics.definition_reconstruction`;
+> full output `ml/diagnostics/output/definition_reconstruction.json`. Artifacts are saved under
+> `ml/diagnostics/artifacts/` (never `ml/artifacts/`) with `feature_version
+> "features-diagnostic-definition-v1"`, so `python -m app.cli sync-models` cannot register them
+> and `ml.inference.predict.load_model` would refuse them even if misdirected there — see
+> `tests/ml/test_diagnostics.py`.
+
+Same chronological split, same algorithms (class_weight=`none` only — the balanced sweep is
+skipped as unnecessary for this comparison), but with `absolute_magnitude_h` and `earth_moid_au`
+added to the orbital-only feature set (2 of 42,351 rows dropped for missing H/MOID).
+
+| Algorithm | Test PR-AUC (primary, orbital-only) | Test PR-AUC (+ H, MOID) | Test recall (+ H, MOID) | Test precision (+ H, MOID) |
+|---|---:|---:|---:|---:|
+| Logistic regression | 0.052 | 0.736 | 0.563 | 0.766 |
+| Random forest | 0.146 | 0.992 | 1.000 | 0.941 |
+| XGBoost | 0.152 | 0.997 | 1.000 | 0.970 |
+
+**Interpretation:** giving the model direct access to the two variables that *define* the JPL PHA
+rule makes the task almost trivial for tree ensembles (test PR-AUC 0.99+, recall 1.00) and much
+easier even for plain logistic regression (0.052 → 0.736). This demonstrates the gap between
+*reconstructing JPL's definition* (near-perfect, once H/MOID are visible) and *learning orbital-
+geometry signal without them* (Experiment 1, PR-AUC 0.05–0.18) — exactly the distinction
+`docs/DATA_LEAKAGE.md` uses to justify excluding H/MOID from the primary model.
+
+---
+
 ## Experiment Template
 
 ```

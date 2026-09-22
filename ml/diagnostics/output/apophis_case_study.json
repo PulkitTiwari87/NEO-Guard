@@ -1,0 +1,25 @@
+{
+  "diagnostic": "apophis_case_study",
+  "label": "qualitative case study / real-world example \u2014 not a validation of overall model performance",
+  "generated_at": "2026-09-22T04:40:49.284538+00:00",
+  "designation": "99942",
+  "full_name": "99942 Apophis (2004 MN4)",
+  "spkid": 20099942,
+  "jpl_pha_status": true,
+  "orbit_class": "ATE",
+  "orbit_class_name": "Aten",
+  "absolute_magnitude_h": 19.09,
+  "earth_moid_au": 0.000107917,
+  "model_version": "random_forest-v1",
+  "model_status": "experimental",
+  "model_score": 0.17632985069053192,
+  "decision_threshold": 0.2702955552073201,
+  "model_decision": "not_potentially_hazardous",
+  "libraries": {
+    "python": "3.12.6",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1"
+  }
+}

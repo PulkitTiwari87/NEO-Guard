@@ -1,5 +1,52 @@
 # Handoff Document
 
+## PHASE: Scientific Validation Upgrade (Claude Code) — 2026-09-22
+
+**Result:** Strengthened the scientific evaluation of the existing orbital-only PHA-approximation
+experiment without rewriting it. Full report: `docs/SCIENTIFIC_REVIEW_REPORT.md`.
+
+**Completed:**
+- New `ml/diagnostics/` package (distribution shift, subgroup/orbital-class evaluation,
+  calibration, definition-reconstruction, Apophis case study), each reproducible via
+  `python -m ml.diagnostics.<name>`, writing to `ml/diagnostics/output/*.json`.
+- `docs/EXPERIMENTS.md`: added a "Distribution shift investigation" section and Experiments 2–4,
+  below the untouched, machine-appended Experiment 1 log.
+- `docs/MODEL_CARD.md`, `docs/LIMITATIONS.md`, `docs/DATA_LEAKAGE.md`, `README.md`,
+  `docs/SCIENTIFIC_INTEGRITY.md`, `docs/API_CONTRACT.md`: terminology and limitation-language
+  updates per the review spec (exact required sentence on H/MOID exclusion; "orbital-geometry-
+  based approximation" framing; "model score, not probability").
+- `backend/app/schemas/prediction.py`: strengthened `DISCLAIMER` text; `probability` field name
+  kept for compatibility (documented decision).
+- Frontend (`Prediction.tsx`, `Models.tsx`, `types/api.ts`): "Model Score" replaces "Probability"
+  in displayed text (API field unchanged); added the required orbital-geometry-score disclaimer
+  line; added a Models-page scientific summary block (Target/Feature scope/Excluded/Status/
+  Primary metric/No-skill baseline/Limitations).
+- `tests/ml/test_diagnostics.py`: 11 new tests, including that diagnostic artifacts never
+  overlap the production registry root and that `ml.inference` refuses the diagnostic feature
+  version.
+
+**Changed:** primary experiment (`ml/training`, `ml/preprocessing`, `ml/features`) is
+**unchanged** — verified by re-running the full test suite and diffing those directories.
+
+**Tests performed:** `pytest -m "not postgres"` 148 passed, 2 deselected (Postgres-marker,
+unchanged); `ruff check .` clean; frontend `tsc --noEmit` 0 errors, `eslint --max-warnings 0`
+clean, `vitest run` 18/18, `vite build` succeeds; manual browser verification of `/predict` and
+`/models`.
+
+**Known issues:** none introduced. Distribution-shift root cause remains explicitly
+INCONCLUSIVE (documented, not a defect). A live backend process from an earlier session was
+still serving the old `DISCLAIMER` string during manual browser verification — source is
+correct; the running process just needs a restart to pick it up (uvicorn `--reload` should do
+this automatically once the file is saved, which it was).
+
+**Next agent:** none required immediately. If future work adds real probability calibration,
+follow the "Recommended future work" section of `docs/SCIENTIFIC_REVIEW_REPORT.md` first.
+
+**Required next actions:** none blocking. No `git commit`/`git push` was performed (per
+instructions) — review `git status`/`git diff --stat` and commit manually when ready.
+
+---
+
 ## PHASE: Phase 5 — Final Release Preparation (Claude Code) — 2026-09-22
 
 **Result:** Repository prepared for manual review, commit, and push. No application code was

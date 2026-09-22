@@ -146,7 +146,14 @@ all nine features are always returned):
 }
 ```
 * `prediction = 1` iff `probability ≥ threshold` (threshold tuned on validation, differs per model).
-* `probability` is `predict_proba` of the positive class; for `*_balanced` models it is **not** a calibrated probability.
+* `probability` is `predict_proba` of the positive class. The field name is kept for API
+  compatibility, but it is **not demonstrated to be a calibrated probability** for any model,
+  including the default: a calibration diagnostic (`docs/EXPERIMENTS.md` Experiment 3) found
+  `random_forest-v1`'s Brier score on validation (0.0234) *worse* than the no-skill baseline
+  (0.0191), and it is overconfident in its top decile. Treat it as an **uncalibrated model
+  score** useful for ranking objects relative to each other, not as "this object has an X%
+  chance of being a PHA." `*_balanced` models are additionally known to be miscalibrated by
+  construction (class-weighted training).
 * `explanation` contributions sum with `base_value` to the model output; `output_space` is `log_odds`
   (logistic regression, XGBoost) or `probability` (random forest). `null` when `explain=false` or the
   model has no explainability artifacts. SHAP describes the model, not causes.

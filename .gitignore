@@ -28,6 +28,7 @@ data/processed/*
 
 # Trained model binaries are large (random forest ~50 MB). Metadata/metrics JSON stays tracked.
 ml/artifacts/**/*.joblib
+ml/diagnostics/artifacts/**/*.joblib
 
 *.log
 

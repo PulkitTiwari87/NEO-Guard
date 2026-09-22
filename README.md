@@ -22,18 +22,24 @@ NASA/JPL (SBDB, CAD) → ingestion → validation → preprocessing → features
 
 * Ingests **42,477 near‑Earth asteroids** and **30,828 predicted Earth close approaches** from the JPL SBDB Query and
   CAD APIs (no API key needed) with immutable raw snapshots and provenance.
-* Trains Logistic Regression, Random Forest and XGBoost to predict JPL's **PHA flag** from orbital elements only,
-  under a leakage audit and a chronological split, with SHAP explanations.
+* Trains Logistic Regression, Random Forest and XGBoost as an **orbital-geometry-based approximation of
+  JPL's PHA classification** — orbital elements only, under a leakage audit and a chronological split,
+  with SHAP explanations.
 * Serves NEO data, close approaches, analytics, model metadata and predictions through a documented REST API
   (`/docs`, `/openapi.json`).
 
 ## Results, honestly
 
 The models beat chance but are **weak**: best on validation is `random_forest-v1` (test PR‑AUC 0.146 vs a 0.013 no‑skill
-level, ROC‑AUC 0.898, precision 0.118, recall 0.391; only 64 positives in the test set). They cannot see the absolute magnitude
-`H` (half of the PHA definition, excluded to avoid leakage) and they miss famous PHAs such as Apophis. All models are
-`experimental`. Details: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), [`docs/MODEL_CARD.md`](docs/MODEL_CARD.md),
-[`docs/LIMITATIONS.md`](docs/LIMITATIONS.md). **This is not an impact‑prediction system.**
+level, ROC‑AUC 0.898, precision 0.118, recall 0.391; only 64 positives in the test set). The model excludes `H` and direct
+MOID inputs — the two variables that define JPL's PHA rule — so it cannot reproduce that rule; it measures how much signal
+orbital geometry alone carries, and misses famous PHAs such as Apophis (score 0.176 < threshold 0.270; qualitative case
+study in `docs/MODEL_CARD.md`). A follow-up diagnostic that *is* given H/MOID (not a production model) reaches test
+PR‑AUC 0.99+, quantifying that gap (`docs/EXPERIMENTS.md` Experiment 4). Its score is a **ranking**, not a calibrated
+probability (Brier score worse than no-skill; Experiment 3). All models are `experimental`. Details:
+[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), [`docs/MODEL_CARD.md`](docs/MODEL_CARD.md),
+[`docs/LIMITATIONS.md`](docs/LIMITATIONS.md). **This is an orbital-geometry-based approximation of the JPL PHA
+classification, not an impact‑prediction system.**
 
 ## Quick start
 

@@ -71,8 +71,11 @@ A random-split comparison was **not** run.
 
 ## Residual risks (not eliminated)
 
-* **Discovery bias / distribution shift.** PHA rate falls from 7.5% (train) to 1.3% (test) because
-  recent discoveries are small (H > 22 → not PHA). The model cannot see H, so it cannot adjust.
+* **Discovery bias / distribution shift.** PHA rate falls from 7.5% (train) to 1.3% (test). The
+  model cannot see H, so it cannot adjust. `docs/EXPERIMENTS.md` "Distribution shift
+  investigation" quantifies this further (orbit-class composition, per-feature KS tests,
+  prevalence by discovery year) — the *cause* of the shift remains INCONCLUSIVE from this dataset
+  alone; we do not assert why recent discoveries skew smaller.
 * **Small test set.** 64 positives; bootstrap intervals are reported and are wide.
 * **Test reuse.** All six candidates were evaluated on the same test set (selection was made on
   validation before looking at test). Any further tuning against test invalidates it.

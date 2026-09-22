@@ -1,0 +1,221 @@
+{
+  "diagnostic": "subgroup_evaluation",
+  "generated_at": "2026-09-22T04:40:31.338607+00:00",
+  "model_version": "random_forest-v1",
+  "model_status": "experimental",
+  "dataset_version": "jpl-sbdb-neo-20260921-c34b5103",
+  "feature_version": "features-v1",
+  "threshold": 0.2702955552073201,
+  "min_positives_for_full_metrics": 10,
+  "orbit_class_names": {
+    "AMO": "Amor",
+    "APO": "Apollo",
+    "ATE": "Aten",
+    "IEO": "Atira"
+  },
+  "splits": {
+    "validation": {
+      "overall": {
+        "support": 5790,
+        "positives": 113,
+        "prevalence": 0.019516407599309154,
+        "metrics": {
+          "n": 5790,
+          "n_positive": 113,
+          "prevalence": 0.019516407599309154,
+          "threshold": 0.2702955552073201,
+          "accuracy": 0.9559585492227979,
+          "precision": 0.21138211382113822,
+          "recall": 0.46017699115044247,
+          "f1": 0.28969359331476324,
+          "roc_auc": 0.9002682770564661,
+          "pr_auc": 0.18267343312532233,
+          "confusion_matrix": {
+            "tn": 5483,
+            "fp": 194,
+            "fn": 61,
+            "tp": 52
+          },
+          "bootstrap_ci": {
+            "method": "percentile bootstrap, 95%",
+            "n_resamples": 1000,
+            "seed": 42,
+            "roc_auc": [
+              0.8760405531129486,
+              0.9225994220907436
+            ],
+            "pr_auc": [
+              0.1339045440155392,
+              0.2550506808424067
+            ]
+          }
+        }
+      },
+      "by_orbit_class": {
+        "AMO": {
+          "orbit_class_name": "Amor",
+          "support": 1851,
+          "positives": 6,
+          "prevalence": 0.0032414910858995136,
+          "metrics": "INSUFFICIENT SAMPLE"
+        },
+        "APO": {
+          "orbit_class_name": "Apollo",
+          "support": 3442,
+          "positives": 105,
+          "prevalence": 0.030505520046484602,
+          "metrics": {
+            "n": 3442,
+            "n_positive": 105,
+            "prevalence": 0.030505520046484602,
+            "threshold": 0.2702955552073201,
+            "accuracy": 0.9308541545613016,
+            "precision": 0.2145922746781116,
+            "recall": 0.47619047619047616,
+            "f1": 0.2958579881656805,
+            "roc_auc": 0.8640809395379369,
+            "pr_auc": 0.18975791821836088,
+            "confusion_matrix": {
+              "tn": 3154,
+              "fp": 183,
+              "fn": 55,
+              "tp": 50
+            },
+            "bootstrap_ci": {
+              "method": "percentile bootstrap, 95%",
+              "n_resamples": 1000,
+              "seed": 42,
+              "roc_auc": [
+                0.8356196838521489,
+                0.8925676773389746
+              ],
+              "pr_auc": [
+                0.14021578004546534,
+                0.26441527994760006
+              ]
+            }
+          }
+        },
+        "ATE": {
+          "orbit_class_name": "Aten",
+          "support": 495,
+          "positives": 2,
+          "prevalence": 0.00404040404040404,
+          "metrics": "INSUFFICIENT SAMPLE"
+        },
+        "IEO": {
+          "orbit_class_name": "Atira",
+          "support": 2,
+          "positives": 0,
+          "prevalence": 0.0,
+          "metrics": "INSUFFICIENT SAMPLE"
+        }
+      }
+    },
+    "test": {
+      "overall": {
+        "support": 5016,
+        "positives": 64,
+        "prevalence": 0.012759170653907496,
+        "metrics": {
+          "n": 5016,
+          "n_positive": 64,
+          "prevalence": 0.012759170653907496,
+          "threshold": 0.2702955552073201,
+          "accuracy": 0.9551435406698564,
+          "precision": 0.11848341232227488,
+          "recall": 0.390625,
+          "f1": 0.18181818181818182,
+          "roc_auc": 0.8978190630048465,
+          "pr_auc": 0.14608891454374118,
+          "confusion_matrix": {
+            "tn": 4766,
+            "fp": 186,
+            "fn": 39,
+            "tp": 25
+          },
+          "bootstrap_ci": {
+            "method": "percentile bootstrap, 95%",
+            "n_resamples": 1000,
+            "seed": 42,
+            "roc_auc": [
+              0.866817251640128,
+              0.9255243999807874
+            ],
+            "pr_auc": [
+              0.08813679414083635,
+              0.23620574126950586
+            ]
+          }
+        }
+      },
+      "by_orbit_class": {
+        "AMO": {
+          "orbit_class_name": "Amor",
+          "support": 1530,
+          "positives": 2,
+          "prevalence": 0.00130718954248366,
+          "metrics": "INSUFFICIENT SAMPLE"
+        },
+        "APO": {
+          "orbit_class_name": "Apollo",
+          "support": 2998,
+          "positives": 56,
+          "prevalence": 0.018679119412941963,
+          "metrics": {
+            "n": 2998,
+            "n_positive": 56,
+            "prevalence": 0.018679119412941963,
+            "threshold": 0.2702955552073201,
+            "accuracy": 0.9329553035356905,
+            "precision": 0.1282051282051282,
+            "recall": 0.44642857142857145,
+            "f1": 0.199203187250996,
+            "roc_auc": 0.8761532485189861,
+            "pr_auc": 0.16606701955750316,
+            "confusion_matrix": {
+              "tn": 2772,
+              "fp": 170,
+              "fn": 31,
+              "tp": 25
+            },
+            "bootstrap_ci": {
+              "method": "percentile bootstrap, 95%",
+              "n_resamples": 1000,
+              "seed": 42,
+              "roc_auc": [
+                0.839249662919409,
+                0.9171851468940672
+              ],
+              "pr_auc": [
+                0.09647390637209408,
+                0.2670742294518892
+              ]
+            }
+          }
+        },
+        "ATE": {
+          "orbit_class_name": "Aten",
+          "support": 484,
+          "positives": 5,
+          "prevalence": 0.010330578512396695,
+          "metrics": "INSUFFICIENT SAMPLE"
+        },
+        "IEO": {
+          "orbit_class_name": "Atira",
+          "support": 4,
+          "positives": 1,
+          "prevalence": 0.25,
+          "metrics": "INSUFFICIENT SAMPLE"
+        }
+      }
+    }
+  },
+  "libraries": {
+    "python": "3.12.6",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1"
+  }
+}

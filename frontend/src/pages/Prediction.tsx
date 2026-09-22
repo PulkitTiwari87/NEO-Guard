@@ -61,7 +61,9 @@ function FieldInput({ id, label, description, value, onChange, error, placeholde
 
 function PredictionResult({ result }: { result: PredictResponse }) {
   const isHazardous = result.prediction === 1;
-  const pctProbability = (result.probability * 100).toFixed(1);
+  // `result.probability` is the API field name (kept for compatibility); it is an uncalibrated
+  // model score, not a demonstrated probability — see docs/EXPERIMENTS.md Experiment 3.
+  const pctModelScore = (result.probability * 100).toFixed(1);
   const pctThreshold = (result.threshold * 100).toFixed(1);
 
   return (
@@ -76,8 +78,8 @@ function PredictionResult({ result }: { result: PredictResponse }) {
               <StatusBadge status={result.model_status} />
             </div>
             <p className="text-2xl font-bold font-mono text-white">
-              {pctProbability}%
-              <span className="text-sm font-normal text-muted ml-2">probability</span>
+              {pctModelScore}%
+              <span className="text-sm font-normal text-muted ml-2">model score</span>
             </p>
             <p className="text-caption text-muted mt-1">
               Threshold: {pctThreshold}% · Model: {result.model_version}
@@ -88,7 +90,7 @@ function PredictionResult({ result }: { result: PredictResponse }) {
           </div>
         </div>
 
-        {/* Probability bar */}
+        {/* Model score bar */}
         <div className="mt-4">
           <div className="flex items-center justify-between text-xs text-muted mb-1">
             <span>0%</span>
@@ -275,7 +277,8 @@ export function Prediction() {
         <AlertTriangle className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-yellow-300">
           <strong>All models are Experimental.</strong>{' '}
-          This is a statistical estimate from orbital elements only — not JPL's PHA designation and not an impact assessment.
+          This model estimates an orbital-geometry-based classification score. It does not estimate asteroid impact
+          probability. It is not JPL's PHA designation and not an impact assessment.
           The best model (validation PR-AUC ≈ 0.18) has recall ≈ 0.39 on the test set: it misses most PHAs.
         </p>
       </div>

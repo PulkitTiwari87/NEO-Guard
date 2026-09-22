@@ -71,11 +71,20 @@ accuracy should be ignored.
 
 ## Known limitations and biases
 
-* **Weak by construction.** Without `H` the model can capture only the MOID half of the PHA rule.
+* **Weak by construction.** The model excludes `H` and direct MOID inputs, so it cannot reproduce
+  the complete JPL PHA decision rule. The experiment instead measures how much predictive signal
+  can be inferred from orbital geometry alone (`docs/LIMITATIONS.md`;
+  `docs/EXPERIMENTS.md` Experiment 4 quantifies the gap: giving a model H and MOID raises test
+  PR-AUC from 0.146 to 0.992 for this same algorithm).
 * **Misses obvious PHAs.** Observed via the API: Apophis (JPL-flagged PHA; H = 19.09, Earth MOID
   0.000108 au) is scored 0.176 < 0.270 → predicted *not* PHA, even though its MOID is ~460× below the
   0.05 au threshold. (Apophis is an Aten-class orbit, a = 0.92 au; such orbits are a minority of the
-  training set.) A recall of 39% means misses like this are expected, not exceptional.
+  training set.) A recall of 39% means misses like this are expected, not exceptional. Full case
+  study below.
+* **Not demonstrated to be calibrated.** `docs/EXPERIMENTS.md` Experiment 3: on validation, this
+  model's Brier score (0.0234) is *worse* than always predicting the base rate (0.0191). The output
+  is useful for ranking, not for reading as a true probability — see "Model score, not probability"
+  below.
 * **Distribution shift.** Trained on a 7.5% PHA rate, tested on 1.3%; the threshold was tuned at 1.95%.
 * **Small test set** (64 positives): all differences between the six models are within noise.
 * **Discovery bias.** Trained on discovered objects only; not a random sample of the NEO population.
@@ -87,6 +96,52 @@ accuracy should be ignored.
 SHAP (probability units for this model). Global attribution on validation: `perihelion_distance_au`
 (mean |SHAP| 0.042) > `eccentricity` (0.023) > `inclination_deg` (0.018) > `ascending_node_sin`
 (0.009). This says how the model uses its inputs, not why asteroids are hazardous.
+
+## Model score, not probability
+
+The API field is still named `probability` (kept for backward compatibility — see
+`docs/API_CONTRACT.md`), but Experiment 3 (`docs/EXPERIMENTS.md`) found it is **not demonstrated
+to be a calibrated probability**: its Brier score on validation (0.0234) is worse than the
+no-skill baseline (0.0191), and it is overconfident in its highest-scoring decile (mean predicted
+27.9%, observed frequency 13.0%). Read the output as a **model score** — useful for ranking
+objects, not as "this object has an X% chance of being a PHA." The frontend and this card use
+"Model Score" language accordingly.
+
+## Subgroup evaluation (by orbital class)
+
+Full results, reproducibility command, and the `INSUFFICIENT SAMPLE` rule:
+`docs/EXPERIMENTS.md` Experiment 2. Summary: only **Apollo** orbits have enough positives (≥10)
+in both validation and test to evaluate; its test PR-AUC (0.166) and ROC-AUC (0.876) track the
+overall test figures (0.146 / 0.898) closely. Amor, Aten and Atira are `INSUFFICIENT SAMPLE` in
+both splits — no per-subgroup claim is made for them.
+
+## Apophis case study (qualitative — one real-world example, not a validation)
+
+Recomputed via `python -m ml.diagnostics.case_study` against the live model
+(`ml/diagnostics/output/apophis_case_study.json`), not retyped:
+
+| Field | Value |
+|---|---|
+| Designation | 99942 Apophis (2004 MN4) |
+| JPL PHA status | `true` |
+| Orbit class | Aten (`ATE`) |
+| H / Earth MOID | 19.09 / 0.000108 au |
+| Model score | 0.1763 |
+| Decision threshold | 0.2703 |
+| Model decision | `not_potentially_hazardous` (miss) |
+
+Apophis is a real, JPL-flagged PHA that this model misses — consistent with its measured 39% test
+recall. **One object does not prove the model works or fails overall**; it illustrates concretely
+what a false negative looks like and why recall, not just accuracy or PR-AUC, matters here.
+
+## Definition-reconstruction diagnostic (context, not this model)
+
+`docs/EXPERIMENTS.md` Experiment 4 trains separate diagnostic-only models with H and MOID added
+to the same feature set. They are **not** `random_forest-v1`, are stored outside the production
+artifact registry, and are never selectable by the API. They exist only to show how much of the
+task becomes trivial once the label-defining variables are visible (test PR-AUC up to 0.997),
+which is why `random_forest-v1` (orbital-only, PR-AUC 0.146) looks weak by comparison — it is
+solving a strictly harder problem by design.
 
 ## Reproducibility
 

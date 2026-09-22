@@ -1,0 +1,691 @@
+{
+  "diagnostic": "distribution_shift",
+  "generated_at": "2026-09-22T04:40:29.025804+00:00",
+  "dataset_version": "jpl-sbdb-neo-20260921-c34b5103",
+  "feature_version": "features-v1",
+  "split_method": "chronological by first_obs_year (whole years per split)",
+  "splits": {
+    "train": {
+      "rows": 31545,
+      "positives": 2372,
+      "positive_rate": 0.07519416706292598,
+      "first_obs_year_min": 1893,
+      "first_obs_year_max": 2022
+    },
+    "validation": {
+      "rows": 5790,
+      "positives": 113,
+      "positive_rate": 0.019516407599309154,
+      "first_obs_year_min": 2023,
+      "first_obs_year_max": 2024
+    },
+    "test": {
+      "rows": 5016,
+      "positives": 64,
+      "positive_rate": 0.012759170653907496,
+      "first_obs_year_min": 2025,
+      "first_obs_year_max": 2026
+    }
+  },
+  "orbit_class_composition": {
+    "train": [
+      {
+        "orbit_class": "APO",
+        "orbit_class_name": "Apollo",
+        "support": 17645,
+        "positives": 2026,
+        "prevalence": 0.1148200623406064
+      },
+      {
+        "orbit_class": "AMO",
+        "orbit_class_name": "Amor",
+        "support": 11405,
+        "positives": 147,
+        "prevalence": 0.012889083735203859
+      },
+      {
+        "orbit_class": "ATE",
+        "orbit_class_name": "Aten",
+        "support": 2463,
+        "positives": 192,
+        "prevalence": 0.0779537149817296
+      },
+      {
+        "orbit_class": "IEO",
+        "orbit_class_name": "Atira",
+        "support": 32,
+        "positives": 7,
+        "prevalence": 0.21875
+      }
+    ],
+    "validation": [
+      {
+        "orbit_class": "APO",
+        "orbit_class_name": "Apollo",
+        "support": 3442,
+        "positives": 105,
+        "prevalence": 0.030505520046484602
+      },
+      {
+        "orbit_class": "AMO",
+        "orbit_class_name": "Amor",
+        "support": 1851,
+        "positives": 6,
+        "prevalence": 0.0032414910858995136
+      },
+      {
+        "orbit_class": "ATE",
+        "orbit_class_name": "Aten",
+        "support": 495,
+        "positives": 2,
+        "prevalence": 0.00404040404040404
+      },
+      {
+        "orbit_class": "IEO",
+        "orbit_class_name": "Atira",
+        "support": 2,
+        "positives": 0,
+        "prevalence": 0.0
+      }
+    ],
+    "test": [
+      {
+        "orbit_class": "APO",
+        "orbit_class_name": "Apollo",
+        "support": 2998,
+        "positives": 56,
+        "prevalence": 0.018679119412941963
+      },
+      {
+        "orbit_class": "AMO",
+        "orbit_class_name": "Amor",
+        "support": 1530,
+        "positives": 2,
+        "prevalence": 0.00130718954248366
+      },
+      {
+        "orbit_class": "ATE",
+        "orbit_class_name": "Aten",
+        "support": 484,
+        "positives": 5,
+        "prevalence": 0.010330578512396695
+      },
+      {
+        "orbit_class": "IEO",
+        "orbit_class_name": "Atira",
+        "support": 4,
+        "positives": 1,
+        "prevalence": 0.25
+      }
+    ]
+  },
+  "prevalence_by_first_obs_year": [
+    {
+      "first_obs_year": 1893,
+      "rows": 1,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1911,
+      "rows": 1,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1918,
+      "rows": 1,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1924,
+      "rows": 1,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1929,
+      "rows": 1,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1930,
+      "rows": 1,
+      "positives": 1,
+      "prevalence": 1.0
+    },
+    {
+      "first_obs_year": 1931,
+      "rows": 1,
+      "positives": 1,
+      "prevalence": 1.0
+    },
+    {
+      "first_obs_year": 1932,
+      "rows": 1,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1934,
+      "rows": 2,
+      "positives": 1,
+      "prevalence": 0.5
+    },
+    {
+      "first_obs_year": 1936,
+      "rows": 1,
+      "positives": 1,
+      "prevalence": 1.0
+    },
+    {
+      "first_obs_year": 1937,
+      "rows": 3,
+      "positives": 2,
+      "prevalence": 0.6666666666666666
+    },
+    {
+      "first_obs_year": 1948,
+      "rows": 2,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1949,
+      "rows": 2,
+      "positives": 2,
+      "prevalence": 1.0
+    },
+    {
+      "first_obs_year": 1950,
+      "rows": 8,
+      "positives": 3,
+      "prevalence": 0.375
+    },
+    {
+      "first_obs_year": 1951,
+      "rows": 8,
+      "positives": 1,
+      "prevalence": 0.125
+    },
+    {
+      "first_obs_year": 1952,
+      "rows": 4,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1953,
+      "rows": 20,
+      "positives": 2,
+      "prevalence": 0.1
+    },
+    {
+      "first_obs_year": 1954,
+      "rows": 16,
+      "positives": 3,
+      "prevalence": 0.1875
+    },
+    {
+      "first_obs_year": 1955,
+      "rows": 22,
+      "positives": 9,
+      "prevalence": 0.4090909090909091
+    },
+    {
+      "first_obs_year": 1956,
+      "rows": 2,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1959,
+      "rows": 2,
+      "positives": 1,
+      "prevalence": 0.5
+    },
+    {
+      "first_obs_year": 1960,
+      "rows": 7,
+      "positives": 3,
+      "prevalence": 0.42857142857142855
+    },
+    {
+      "first_obs_year": 1963,
+      "rows": 2,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1968,
+      "rows": 1,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1970,
+      "rows": 1,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1971,
+      "rows": 4,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1972,
+      "rows": 1,
+      "positives": 0,
+      "prevalence": 0.0
+    },
+    {
+      "first_obs_year": 1973,
+      "rows": 5,
+      "positives": 1,
+      "prevalence": 0.2
+    },
+    {
+      "first_obs_year": 1974,
+      "rows": 13,
+      "positives": 4,
+      "prevalence": 0.3076923076923077
+    },
+    {
+      "first_obs_year": 1975,
+      "rows": 14,
+      "positives": 1,
+      "prevalence": 0.07142857142857142
+    },
+    {
+      "first_obs_year": 1976,
+      "rows": 18,
+      "positives": 4,
+      "prevalence": 0.2222222222222222
+    },
+    {
+      "first_obs_year": 1977,
+      "rows": 18,
+      "positives": 4,
+      "prevalence": 0.2222222222222222
+    },
+    {
+      "first_obs_year": 1978,
+      "rows": 22,
+      "positives": 6,
+      "prevalence": 0.2727272727272727
+    },
+    {
+      "first_obs_year": 1979,
+      "rows": 22,
+      "positives": 4,
+      "prevalence": 0.18181818181818182
+    },
+    {
+      "first_obs_year": 1980,
+      "rows": 14,
+      "positives": 1,
+      "prevalence": 0.07142857142857142
+    },
+    {
+      "first_obs_year": 1981,
+      "rows": 14,
+      "positives": 3,
+      "prevalence": 0.21428571428571427
+    },
+    {
+      "first_obs_year": 1982,
+      "rows": 30,
+      "positives": 5,
+      "prevalence": 0.16666666666666666
+    },
+    {
+      "first_obs_year": 1983,
+      "rows": 29,
+      "positives": 7,
+      "prevalence": 0.2413793103448276
+    },
+    {
+      "first_obs_year": 1984,
+      "rows": 17,
+      "positives": 6,
+      "prevalence": 0.35294117647058826
+    },
+    {
+      "first_obs_year": 1985,
+      "rows": 17,
+      "positives": 4,
+      "prevalence": 0.23529411764705882
+    },
+    {
+      "first_obs_year": 1986,
+      "rows": 21,
+      "positives": 6,
+      "prevalence": 0.2857142857142857
+    },
+    {
+      "first_obs_year": 1987,
+      "rows": 25,
+      "positives": 5,
+      "prevalence": 0.2
+    },
+    {
+      "first_obs_year": 1988,
+      "rows": 23,
+      "positives": 4,
+      "prevalence": 0.17391304347826086
+    },
+    {
+      "first_obs_year": 1989,
+      "rows": 39,
+      "positives": 15,
+      "prevalence": 0.38461538461538464
+    },
+    {
+      "first_obs_year": 1990,
+      "rows": 38,
+      "positives": 13,
+      "prevalence": 0.34210526315789475
+    },
+    {
+      "first_obs_year": 1991,
+      "rows": 55,
+      "positives": 14,
+      "prevalence": 0.2545454545454545
+    },
+    {
+      "first_obs_year": 1992,
+      "rows": 37,
+      "positives": 4,
+      "prevalence": 0.10810810810810811
+    },
+    {
+      "first_obs_year": 1993,
+      "rows": 59,
+      "positives": 11,
+      "prevalence": 0.1864406779661017
+    },
+    {
+      "first_obs_year": 1994,
+      "rows": 62,
+      "positives": 15,
+      "prevalence": 0.24193548387096775
+    },
+    {
+      "first_obs_year": 1995,
+      "rows": 59,
+      "positives": 5,
+      "prevalence": 0.0847457627118644
+    },
+    {
+      "first_obs_year": 1996,
+      "rows": 76,
+      "positives": 14,
+      "prevalence": 0.18421052631578946
+    },
+    {
+      "first_obs_year": 1997,
+      "rows": 80,
+      "positives": 13,
+      "prevalence": 0.1625
+    },
+    {
+      "first_obs_year": 1998,
+      "rows": 217,
+      "positives": 64,
+      "prevalence": 0.29493087557603687
+    },
+    {
+      "first_obs_year": 1999,
+      "rows": 205,
+      "positives": 42,
+      "prevalence": 0.2048780487804878
+    },
+    {
+      "first_obs_year": 2000,
+      "rows": 368,
+      "positives": 89,
+      "prevalence": 0.2418478260869565
+    },
+    {
+      "first_obs_year": 2001,
+      "rows": 513,
+      "positives": 101,
+      "prevalence": 0.1968810916179337
+    },
+    {
+      "first_obs_year": 2002,
+      "rows": 634,
+      "positives": 125,
+      "prevalence": 0.1971608832807571
+    },
+    {
+      "first_obs_year": 2003,
+      "rows": 477,
+      "positives": 79,
+      "prevalence": 0.16561844863731656
+    },
+    {
+      "first_obs_year": 2004,
+      "rows": 546,
+      "positives": 92,
+      "prevalence": 0.1684981684981685
+    },
+    {
+      "first_obs_year": 2005,
+      "rows": 639,
+      "positives": 86,
+      "prevalence": 0.13458528951486698
+    },
+    {
+      "first_obs_year": 2006,
+      "rows": 612,
+      "positives": 71,
+      "prevalence": 0.11601307189542484
+    },
+    {
+      "first_obs_year": 2007,
+      "rows": 639,
+      "positives": 79,
+      "prevalence": 0.12363067292644757
+    },
+    {
+      "first_obs_year": 2008,
+      "rows": 801,
+      "positives": 90,
+      "prevalence": 0.11235955056179775
+    },
+    {
+      "first_obs_year": 2009,
+      "rows": 774,
+      "positives": 71,
+      "prevalence": 0.0917312661498708
+    },
+    {
+      "first_obs_year": 2010,
+      "rows": 1107,
+      "positives": 126,
+      "prevalence": 0.11382113821138211
+    },
+    {
+      "first_obs_year": 2011,
+      "rows": 1020,
+      "positives": 110,
+      "prevalence": 0.10784313725490197
+    },
+    {
+      "first_obs_year": 2012,
+      "rows": 1087,
+      "positives": 91,
+      "prevalence": 0.08371665133394664
+    },
+    {
+      "first_obs_year": 2013,
+      "rows": 1166,
+      "positives": 103,
+      "prevalence": 0.08833619210977701
+    },
+    {
+      "first_obs_year": 2014,
+      "rows": 1650,
+      "positives": 129,
+      "prevalence": 0.07818181818181819
+    },
+    {
+      "first_obs_year": 2015,
+      "rows": 1666,
+      "positives": 121,
+      "prevalence": 0.07262905162064826
+    },
+    {
+      "first_obs_year": 2016,
+      "rows": 1894,
+      "positives": 107,
+      "prevalence": 0.056494192185850056
+    },
+    {
+      "first_obs_year": 2017,
+      "rows": 1981,
+      "positives": 95,
+      "prevalence": 0.04795557799091368
+    },
+    {
+      "first_obs_year": 2018,
+      "rows": 1739,
+      "positives": 47,
+      "prevalence": 0.02702702702702703
+    },
+    {
+      "first_obs_year": 2019,
+      "rows": 2299,
+      "positives": 70,
+      "prevalence": 0.030448020878642887
+    },
+    {
+      "first_obs_year": 2020,
+      "rows": 2710,
+      "positives": 75,
+      "prevalence": 0.027675276752767528
+    },
+    {
+      "first_obs_year": 2021,
+      "rows": 2877,
+      "positives": 54,
+      "prevalence": 0.018769551616266946
+    },
+    {
+      "first_obs_year": 2022,
+      "rows": 3001,
+      "positives": 56,
+      "prevalence": 0.01866044651782739
+    },
+    {
+      "first_obs_year": 2023,
+      "rows": 2784,
+      "positives": 58,
+      "prevalence": 0.020833333333333332
+    },
+    {
+      "first_obs_year": 2024,
+      "rows": 3006,
+      "positives": 55,
+      "prevalence": 0.018296739853626082
+    },
+    {
+      "first_obs_year": 2025,
+      "rows": 3158,
+      "positives": 42,
+      "prevalence": 0.013299556681443952
+    },
+    {
+      "first_obs_year": 2026,
+      "rows": 1858,
+      "positives": 22,
+      "prevalence": 0.011840688912809472
+    }
+  ],
+  "feature_distribution_shift_train_vs_test": [
+    {
+      "feature": "semi_major_axis_au",
+      "train_mean": 1.7718592804472484,
+      "train_std": 2.282416597590121,
+      "test_mean": 1.6791377459563646,
+      "test_std": 0.5992274510422589,
+      "ks_statistic": 0.06469168371150508,
+      "ks_pvalue": 3.4347453599865477e-16
+    },
+    {
+      "feature": "eccentricity",
+      "train_mean": 0.43876054417334037,
+      "train_std": 0.1767863869770269,
+      "test_mean": 0.41571424371726556,
+      "test_std": 0.17413575518739005,
+      "ks_statistic": 0.05680739370580956,
+      "ks_pvalue": 1.3965774839545287e-12
+    },
+    {
+      "feature": "inclination_deg",
+      "train_mean": 12.20115951494176,
+      "train_std": 10.851955655295445,
+      "test_mean": 10.92034131594875,
+      "test_std": 9.735881342615222,
+      "ks_statistic": 0.048600029122215505,
+      "ks_pvalue": 2.532344185834093e-09
+    },
+    {
+      "feature": "perihelion_distance_au",
+      "train_mean": 0.9153584345408402,
+      "train_std": 0.22768817407799066,
+      "test_mean": 0.908948719640691,
+      "test_std": 0.19914573530862834,
+      "ks_statistic": 0.06857745182131403,
+      "ks_pvalue": 3.839425038119287e-18
+    },
+    {
+      "feature": "aphelion_distance_au",
+      "train_mean": 2.6283601263536567,
+      "train_std": 4.546933434184662,
+      "test_mean": 2.449326772272038,
+      "test_std": 1.145405770568393,
+      "ks_statistic": 0.06382370518003827,
+      "ks_pvalue": 9.041422087839689e-16
+    },
+    {
+      "feature": "ascending_node_deg",
+      "train_mean": 171.90494193962653,
+      "train_std": 103.60127722316095,
+      "test_mean": 179.7267841721275,
+      "test_std": 103.9612654401812,
+      "ks_statistic": 0.0432966385834469,
+      "ks_pvalue": 1.7330819643314017e-07
+    },
+    {
+      "feature": "argument_of_perihelion_deg",
+      "train_mean": 182.35239614969515,
+      "train_std": 104.34109096796404,
+      "test_mean": 183.36451690115533,
+      "test_std": 102.82706011742843,
+      "ks_statistic": 0.01497898119266089,
+      "ks_pvalue": 0.28313128650375097
+    }
+  ],
+  "libraries": {
+    "python": "3.12.6",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1"
+  },
+  "interpretation": {
+    "established": [
+      "PHA prevalence falls monotonically from train to validation to test (see 'splits' above) \u2014 this is directly measured, not inferred.",
+      "Orbit-class composition and the per-feature train/test distributions differ measurably (see ks_statistic/ks_pvalue: a small p-value rejects the null hypothesis that train and test are drawn from the same distribution)."
+    ],
+    "inconclusive": [
+      "The root cause of the prevalence shift (why recent discoveries skew toward small, non-PHA objects) cannot be established from this dataset alone: it would require survey completeness / discovery-effort data that is not part of the SBDB snapshot used here. INCONCLUSIVE."
+    ]
+  }
+}

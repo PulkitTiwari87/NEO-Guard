@@ -1,0 +1,50 @@
+{
+  "diagnostic": "calibration",
+  "generated_at": "2026-09-22T04:40:46.672890+00:00",
+  "model_version": "random_forest-v1",
+  "model_status": "experimental",
+  "dataset_version": "jpl-sbdb-neo-20260921-c34b5103",
+  "split_evaluated": "validation",
+  "split_evaluated_reason": "Test is reserved for the single final evaluation per model (docs/ML_WORKFLOW.md); this diagnostic uses validation instead. Validation is already reused for threshold tuning (ml.training.train); reusing it again here for a read-only diagnostic that selects between no models and feeds back into no training adds no new leakage. No separate calibration split exists in this project (docs/DATA_LEAKAGE.md defines only train/validation/test).",
+  "n": 5790,
+  "n_positive": 113,
+  "brier_score": 0.023436383770743727,
+  "no_skill_brier_score": 0.019135517433726785,
+  "reliability_curve": {
+    "n_bins_requested": 10,
+    "strategy": "quantile",
+    "n_bins_returned": 10,
+    "mean_predicted_probability": [
+      5.5473802492541855e-05,
+      0.0021474889547021406,
+      0.011639537632659258,
+      0.02551295662130774,
+      0.0419336398491887,
+      0.061371137774502905,
+      0.08483092485636456,
+      0.11603043509985199,
+      0.16479656997821093,
+      0.27929046440376065
+    ],
+    "observed_frequency": [
+      0.0,
+      0.0,
+      0.0017271157167530224,
+      0.0,
+      0.0,
+      0.0034542314335060447,
+      0.012089810017271158,
+      0.024179620034542316,
+      0.024179620034542316,
+      0.12953367875647667
+    ]
+  },
+  "calibration_transform_applied_to_production_model": false,
+  "libraries": {
+    "python": "3.12.6",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1"
+  }
+}

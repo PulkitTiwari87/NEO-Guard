@@ -1,0 +1,293 @@
+{
+  "diagnostic": "definition_reconstruction",
+  "generated_at": "2026-09-22T04:41:04.340329+00:00",
+  "NOT_A_PREDICTIVE_MODEL": true,
+  "excluded_from_production_selection": true,
+  "purpose": "Measures how much of the PHA classification task becomes trivial when the two label-defining variables (H, Earth MOID) are available as inputs, for comparison against the orbital-only primary experiment (docs/EXPERIMENTS.md Experiment 1).",
+  "dataset_version": "jpl-sbdb-neo-20260921-c34b5103",
+  "feature_version": "features-diagnostic-definition-v1",
+  "raw_features": [
+    "semi_major_axis_au",
+    "eccentricity",
+    "inclination_deg",
+    "perihelion_distance_au",
+    "aphelion_distance_au",
+    "ascending_node_deg",
+    "argument_of_perihelion_deg",
+    "absolute_magnitude_h",
+    "earth_moid_au"
+  ],
+  "rows_dropped_missing_h_or_moid": 2,
+  "algorithms": {
+    "logistic_regression": {
+      "diagnostic": "definition_reconstruction",
+      "NOT_A_PREDICTIVE_MODEL": true,
+      "excluded_from_production_selection": true,
+      "model_name": "logistic_regression",
+      "model_version": "logistic_regression-diagnostic-defn-recon-v1",
+      "algorithm": "logistic_regression",
+      "class_weight": "none",
+      "status": "diagnostic",
+      "created_at": "2026-09-22T04:40:58.031095+00:00",
+      "dataset_version": "jpl-sbdb-neo-20260921-c34b5103",
+      "feature_version": "features-diagnostic-definition-v1",
+      "target": "is_potentially_hazardous",
+      "raw_features": [
+        "semi_major_axis_au",
+        "eccentricity",
+        "inclination_deg",
+        "perihelion_distance_au",
+        "aphelion_distance_au",
+        "ascending_node_deg",
+        "argument_of_perihelion_deg",
+        "absolute_magnitude_h",
+        "earth_moid_au"
+      ],
+      "random_seed": 42,
+      "threshold": 0.5165562510139585,
+      "threshold_selection": "maximises F1 on the validation split",
+      "rows_dropped_missing_h_or_moid": 2,
+      "metrics": {
+        "validation": {
+          "n": 5790,
+          "n_positive": 113,
+          "prevalence": 0.019516407599309154,
+          "threshold": 0.5165562510139585,
+          "accuracy": 0.9905008635578584,
+          "precision": 0.8452380952380952,
+          "recall": 0.6283185840707964,
+          "f1": 0.7208121827411168,
+          "roc_auc": 0.9927887875467069,
+          "pr_auc": 0.8129489277562184,
+          "confusion_matrix": {
+            "tn": 5664,
+            "fp": 13,
+            "fn": 42,
+            "tp": 71
+          }
+        },
+        "test": {
+          "n": 5016,
+          "n_positive": 64,
+          "prevalence": 0.012759170653907496,
+          "threshold": 0.5165562510139585,
+          "accuracy": 0.9922248803827751,
+          "precision": 0.7659574468085106,
+          "recall": 0.5625,
+          "f1": 0.6486486486486487,
+          "roc_auc": 0.9927144335621971,
+          "pr_auc": 0.7355180144623722,
+          "confusion_matrix": {
+            "tn": 4941,
+            "fp": 11,
+            "fn": 28,
+            "tp": 36
+          },
+          "bootstrap_ci": {
+            "method": "percentile bootstrap, 95%",
+            "n_resamples": 1000,
+            "seed": 42,
+            "roc_auc": [
+              0.9895554717399908,
+              0.9951894932762838
+            ],
+            "pr_auc": [
+              0.6353135561345616,
+              0.8142939036029703
+            ]
+          }
+        }
+      },
+      "libraries": {
+        "python": "3.12.6",
+        "numpy": "2.5.3",
+        "pandas": "3.0.6",
+        "scikit-learn": "1.9.1",
+        "xgboost": "3.4.1"
+      }
+    },
+    "random_forest": {
+      "diagnostic": "definition_reconstruction",
+      "NOT_A_PREDICTIVE_MODEL": true,
+      "excluded_from_production_selection": true,
+      "model_name": "random_forest",
+      "model_version": "random_forest-diagnostic-defn-recon-v1",
+      "algorithm": "random_forest",
+      "class_weight": "none",
+      "status": "diagnostic",
+      "created_at": "2026-09-22T04:41:01.221350+00:00",
+      "dataset_version": "jpl-sbdb-neo-20260921-c34b5103",
+      "feature_version": "features-diagnostic-definition-v1",
+      "target": "is_potentially_hazardous",
+      "raw_features": [
+        "semi_major_axis_au",
+        "eccentricity",
+        "inclination_deg",
+        "perihelion_distance_au",
+        "aphelion_distance_au",
+        "ascending_node_deg",
+        "argument_of_perihelion_deg",
+        "absolute_magnitude_h",
+        "earth_moid_au"
+      ],
+      "random_seed": 42,
+      "threshold": 0.45097998760498775,
+      "threshold_selection": "maximises F1 on the validation split",
+      "rows_dropped_missing_h_or_moid": 2,
+      "metrics": {
+        "validation": {
+          "n": 5790,
+          "n_positive": 113,
+          "prevalence": 0.019516407599309154,
+          "threshold": 0.45097998760498775,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "roc_auc": 1.0,
+          "pr_auc": 1.0,
+          "confusion_matrix": {
+            "tn": 5677,
+            "fp": 0,
+            "fn": 0,
+            "tp": 113
+          }
+        },
+        "test": {
+          "n": 5016,
+          "n_positive": 64,
+          "prevalence": 0.012759170653907496,
+          "threshold": 0.45097998760498775,
+          "accuracy": 0.9992025518341308,
+          "precision": 0.9411764705882353,
+          "recall": 1.0,
+          "f1": 0.9696969696969697,
+          "roc_auc": 0.9999116518578353,
+          "pr_auc": 0.99177856078174,
+          "confusion_matrix": {
+            "tn": 4948,
+            "fp": 4,
+            "fn": 0,
+            "tp": 64
+          },
+          "bootstrap_ci": {
+            "method": "percentile bootstrap, 95%",
+            "n_resamples": 1000,
+            "seed": 42,
+            "roc_auc": [
+              0.9997027390859655,
+              1.0
+            ],
+            "pr_auc": [
+              0.9715519053019742,
+              1.0
+            ]
+          }
+        }
+      },
+      "libraries": {
+        "python": "3.12.6",
+        "numpy": "2.5.3",
+        "pandas": "3.0.6",
+        "scikit-learn": "1.9.1",
+        "xgboost": "3.4.1"
+      }
+    },
+    "xgboost": {
+      "diagnostic": "definition_reconstruction",
+      "NOT_A_PREDICTIVE_MODEL": true,
+      "excluded_from_production_selection": true,
+      "model_name": "xgboost",
+      "model_version": "xgboost-diagnostic-defn-recon-v1",
+      "algorithm": "xgboost",
+      "class_weight": "none",
+      "status": "diagnostic",
+      "created_at": "2026-09-22T04:41:04.334131+00:00",
+      "dataset_version": "jpl-sbdb-neo-20260921-c34b5103",
+      "feature_version": "features-diagnostic-definition-v1",
+      "target": "is_potentially_hazardous",
+      "raw_features": [
+        "semi_major_axis_au",
+        "eccentricity",
+        "inclination_deg",
+        "perihelion_distance_au",
+        "aphelion_distance_au",
+        "ascending_node_deg",
+        "argument_of_perihelion_deg",
+        "absolute_magnitude_h",
+        "earth_moid_au"
+      ],
+      "random_seed": 42,
+      "threshold": 0.96006178855896,
+      "threshold_selection": "maximises F1 on the validation split",
+      "rows_dropped_missing_h_or_moid": 2,
+      "metrics": {
+        "validation": {
+          "n": 5790,
+          "n_positive": 113,
+          "prevalence": 0.019516407599309154,
+          "threshold": 0.96006178855896,
+          "accuracy": 0.9993091537132988,
+          "precision": 0.990990990990991,
+          "recall": 0.9734513274336283,
+          "f1": 0.9821428571428571,
+          "roc_auc": 0.999962587743433,
+          "pr_auc": 0.9982183388602153,
+          "confusion_matrix": {
+            "tn": 5676,
+            "fp": 1,
+            "fn": 3,
+            "tp": 110
+          }
+        },
+        "test": {
+          "n": 5016,
+          "n_positive": 64,
+          "prevalence": 0.012759170653907496,
+          "threshold": 0.96006178855896,
+          "accuracy": 0.9996012759170654,
+          "precision": 0.9696969696969697,
+          "recall": 1.0,
+          "f1": 0.9846153846153847,
+          "roc_auc": 0.9999652918012925,
+          "pr_auc": 0.9972800382085893,
+          "confusion_matrix": {
+            "tn": 4950,
+            "fp": 2,
+            "fn": 0,
+            "tp": 64
+          },
+          "bootstrap_ci": {
+            "method": "percentile bootstrap, 95%",
+            "n_resamples": 1000,
+            "seed": 42,
+            "roc_auc": [
+              0.9998885030359047,
+              1.0
+            ],
+            "pr_auc": [
+              0.9910657251867647,
+              1.0
+            ]
+          }
+        }
+      },
+      "libraries": {
+        "python": "3.12.6",
+        "numpy": "2.5.3",
+        "pandas": "3.0.6",
+        "scikit-learn": "1.9.1",
+        "xgboost": "3.4.1"
+      }
+    }
+  },
+  "artifact_root": "D:\\Claude Code\\NEO-Guard\\ml\\diagnostics\\artifacts",
+  "artifact_root_isolated_from_production": true,
+  "libraries": {
+    "python": "3.12.6",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1"
+  }
+}

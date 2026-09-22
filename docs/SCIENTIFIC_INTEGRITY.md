@@ -17,4 +17,4 @@
 
 ## Scope Disclaimer
 
-> This project is NOT an asteroid impact prediction system unless future scientific validation establishes that capability. The initial scope is NEO classification, analysis, and explainable ML based on documented source data.
+> This project is NOT an asteroid impact prediction system unless future scientific validation establishes that capability. The initial scope is NEO classification, analysis, and explainable ML based on documented source data. The ML component is more precisely described as an **orbital-geometry-based approximation of JPL's Potentially Hazardous Asteroid (PHA) classification** — see `docs/EXPERIMENTS.md` and `docs/LIMITATIONS.md` for what that approximation can and cannot capture.

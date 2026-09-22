@@ -6,12 +6,28 @@
 ## Scientific framing
 
 * **The target is a deterministic rule.** JPL's PHA flag is "Earth MOID ≤ 0.05 au and H ≤ 22.0"; it
-  matches that rule for 42,301 of 42,351 objects. `moid` and `H` are therefore excluded as inputs,
-  and the models learn only which *orbits* can approach Earth closely. This is a weaker task than
-  reproducing the flag and needs **human confirmation** of the intended scientific goal
-  ([`DATA_LEAKAGE.md`](DATA_LEAKAGE.md)).
+  matches that rule for 42,301 of 42,351 objects. `moid` and `H` are therefore excluded as inputs.
+  The model excludes H and direct MOID inputs, so it cannot reproduce the complete JPL PHA
+  decision rule. The experiment instead measures how much predictive signal can be inferred from
+  orbital geometry alone ([`DATA_LEAKAGE.md`](DATA_LEAKAGE.md); the size of that gap is quantified
+  in [`EXPERIMENTS.md`](EXPERIMENTS.md) Experiment 4 — a diagnostic-only model given H/MOID reaches
+  test PR-AUC 0.99+ versus 0.146 without them).
+* Prefer **"orbital-geometry-based approximation of the JPL PHA classification"** over "PHA
+  prediction system" where scientifically appropriate.
 * **Not an impact-prediction or risk system** ([`SCIENTIFIC_INTEGRITY.md`](SCIENTIFIC_INTEGRITY.md)).
 * SHAP values describe how a model uses its inputs. They are not causal statements about asteroids.
+* **Output is a model score, not a calibrated probability.** [`EXPERIMENTS.md`](EXPERIMENTS.md)
+  Experiment 3: `random_forest-v1`'s Brier score on validation (0.0234) is worse than the no-skill
+  baseline (0.0191); it is overconfident in its top decile. The API field is still named
+  `probability` for compatibility ([`API_CONTRACT.md`](API_CONTRACT.md)) but should be read as an
+  uncalibrated score.
+* **Subgroup performance is uneven and mostly unmeasurable.** [`EXPERIMENTS.md`](EXPERIMENTS.md)
+  Experiment 2: only the Apollo orbital class has enough positives to evaluate; Amor, Aten and
+  Atira are `INSUFFICIENT SAMPLE` in both validation and test.
+* **Distribution shift is now quantified, not just asserted.** [`EXPERIMENTS.md`](EXPERIMENTS.md)
+  "Distribution shift investigation": orbit-class composition and 6 of 7 raw features differ
+  significantly (KS test) between train and test; the root *cause* of the shift remains
+  INCONCLUSIVE from this dataset alone.
 
 ## Dataset limitations
 

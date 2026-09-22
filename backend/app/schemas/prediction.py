@@ -13,8 +13,10 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from ml.validation.schema import REL_TOL
 
 DISCLAIMER = (
-    "Statistical estimate from seven orbital elements only. It is not JPL's PHA designation "
-    "(which also requires absolute magnitude H) and not an impact-risk assessment."
+    "Orbital-geometry-based classification score from seven orbital elements only. It is not "
+    "JPL's PHA designation (which also requires absolute magnitude H and Earth MOID), not an "
+    "impact-risk assessment, and not demonstrated to be a calibrated probability — treat "
+    "'probability' as an uncalibrated model score (docs/EXPERIMENTS.md, calibration diagnostic)."
 )
 
 
