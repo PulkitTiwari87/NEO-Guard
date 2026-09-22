@@ -41,8 +41,9 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=4).status == 200 else 1)"
 
 # Render's Docker runtime has no separate one-off "migrate" step (unlike docker-compose.yml's
-# dedicated `migrate` service), so run migrations + data/model load before serving on every
-# start. All three are idempotent and read data already baked into the image at build time
-# (no network calls): alembic applies the tracked versions in backend/alembic/versions/,
-# load-data reads data/interim/, sync-models reads ml/artifacts/.
-CMD ["sh", "-c", "alembic upgrade head && python -m app.cli load-data && python -m app.cli sync-models && exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers"]
+# dedicated `migrate` service), so run the schema migration before serving on every start
+# (fast, must complete before any query). The data load (42k+ rows) and model sync are also
+# idempotent and read data already baked into the image at build time (no network calls), but
+# they run inside app.main's lifespan startup hook instead of here: they're too slow to finish
+# before Render's port-scan timeout, and that hook binds the port first.
+CMD ["sh", "-c", "alembic upgrade head && exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers"]

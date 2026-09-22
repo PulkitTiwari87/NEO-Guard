@@ -70,7 +70,7 @@ Use it as the platform health check (exempt from rate limiting).
 | Environment | Docker |
 | Dockerfile path | `backend/Dockerfile` (build context = repository root — the image needs `ml/`) |
 | Build command | none — Docker build only |
-| Start command | none — uses the Dockerfile `CMD`, which runs `alembic upgrade head && python -m app.cli load-data && python -m app.cli sync-models` before `uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers` (Render's single web service has no separate one-off migrate step like `docker-compose.yml`'s `migrate` service, so these run — idempotently, from data already baked into the image — on every start) |
+| Start command | none — uses the Dockerfile `CMD`, which runs `alembic upgrade head` (blocking, fast) then `uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers`. The data load and model sync (42k+ rows) are idempotent and read data already baked into the image, but run in a background thread from `app.main`'s FastAPI `lifespan` hook instead of blocking `CMD` — Render's deploy port-scan has a timeout shorter than a full data load, and an earlier version that ran them before `uvicorn` bound the port caused every deploy to time out and roll back (fixed 2026-09-22, see `docs/HANDOFF.md`) |
 | Port | 8000 (`EXPOSE 8000` in the Dockerfile; Render's Docker runtime detects it) |
 | Health check path | `/api/health` |
 | Environment variables | see the table above — `DATABASE_URL`, `MODEL_ENV=production`, `CORS_ORIGINS=<vercel-url>` at minimum |
