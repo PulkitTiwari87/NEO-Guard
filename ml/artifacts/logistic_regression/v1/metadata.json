@@ -1,0 +1,138 @@
+{
+  "model_name": "logistic_regression",
+  "model_version": "logistic_regression-v1",
+  "artifact_path": "logistic_regression/v1",
+  "algorithm": "logistic_regression",
+  "class_weight": "none",
+  "status": "experimental",
+  "created_at": "2026-09-21T13:04:52.355298+00:00",
+  "experiment_id": "EXP-20260921T130452Z-logistic_regression-v1",
+  "dataset_version": "jpl-sbdb-neo-20260921-c34b5103",
+  "feature_version": "features-v1",
+  "target": "is_potentially_hazardous",
+  "raw_features": [
+    "semi_major_axis_au",
+    "eccentricity",
+    "inclination_deg",
+    "perihelion_distance_au",
+    "aphelion_distance_au",
+    "ascending_node_deg",
+    "argument_of_perihelion_deg"
+  ],
+  "features": [
+    "semi_major_axis_au",
+    "eccentricity",
+    "inclination_deg",
+    "perihelion_distance_au",
+    "aphelion_distance_au",
+    "ascending_node_sin",
+    "ascending_node_cos",
+    "argument_of_perihelion_sin",
+    "argument_of_perihelion_cos"
+  ],
+  "parameters": {
+    "C": 1.0,
+    "class_weight": null,
+    "dual": false,
+    "fit_intercept": true,
+    "intercept_scaling": 1,
+    "l1_ratio": 0.0,
+    "max_iter": 2000,
+    "n_jobs": null,
+    "penalty": "deprecated",
+    "random_state": 42,
+    "solver": "lbfgs",
+    "tol": 0.0001,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "random_seed": 42,
+  "threshold": 0.12808259200295957,
+  "threshold_selection": "maximises F1 on the validation split",
+  "split": {
+    "method": "chronological by first_obs_year (whole years per split)",
+    "cutoffs": {
+      "train_last_year": 2022,
+      "validation_last_year": 2024
+    },
+    "train": {
+      "rows": 31545,
+      "positives": 2372,
+      "positive_rate": 0.07519416706292598,
+      "first_obs_year_min": 1893,
+      "first_obs_year_max": 2022
+    },
+    "validation": {
+      "rows": 5790,
+      "positives": 113,
+      "positive_rate": 0.019516407599309154,
+      "first_obs_year_min": 2023,
+      "first_obs_year_max": 2024
+    },
+    "test": {
+      "rows": 5016,
+      "positives": 64,
+      "positive_rate": 0.012759170653907496,
+      "first_obs_year_min": 2025,
+      "first_obs_year_max": 2026
+    }
+  },
+  "metrics": {
+    "validation": {
+      "n": 5790,
+      "n_positive": 113,
+      "prevalence": 0.019516407599309154,
+      "threshold": 0.12808259200295957,
+      "accuracy": 0.9056994818652849,
+      "precision": 0.08918406072106262,
+      "recall": 0.415929203539823,
+      "f1": 0.146875,
+      "roc_auc": 0.8303697110370832,
+      "pr_auc": 0.07931420323694363,
+      "confusion_matrix": {
+        "tn": 5197,
+        "fp": 480,
+        "fn": 66,
+        "tp": 47
+      }
+    },
+    "test": {
+      "n": 5016,
+      "n_positive": 64,
+      "prevalence": 0.012759170653907496,
+      "threshold": 0.12808259200295957,
+      "accuracy": 0.9070972886762361,
+      "precision": 0.04318181818181818,
+      "recall": 0.296875,
+      "f1": 0.07539682539682539,
+      "roc_auc": 0.8062493689418415,
+      "pr_auc": 0.05224823163366345,
+      "confusion_matrix": {
+        "tn": 4531,
+        "fp": 421,
+        "fn": 45,
+        "tp": 19
+      },
+      "bootstrap_ci": {
+        "method": "percentile bootstrap, 95%",
+        "n_resamples": 1000,
+        "seed": 42,
+        "roc_auc": [
+          0.7620158067095937,
+          0.850014771709094
+        ],
+        "pr_auc": [
+          0.033229832369766565,
+          0.0881448989129707
+        ]
+      }
+    }
+  },
+  "libraries": {
+    "python": "3.12.6",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1"
+  }
+}

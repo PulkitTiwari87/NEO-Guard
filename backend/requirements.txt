@@ -1,0 +1,23 @@
+# NEO-Guard backend + ML runtime dependencies (pinned to the versions verified in development).
+# Python 3.11+ (developed and tested on 3.12).
+
+# API
+fastapi==0.141.1
+starlette==1.6.0
+uvicorn==0.53.0
+pydantic==2.13.5
+pydantic-settings==2.15.0
+
+# Database
+SQLAlchemy==2.0.54
+alembic==1.20.0
+psycopg[binary]==3.3.6
+
+# Data + ML (ingestion client uses httpx)
+httpx==0.28.1
+pandas==3.0.6
+numpy==2.5.3
+scikit-learn==1.9.1
+xgboost==3.4.1
+shap==0.52.0
+joblib==1.6.0

@@ -1,5 +1,12 @@
 # ml/explainability/
 
-**Status: NOT IMPLEMENTED**
+**IMPLEMENTED.** SHAP explanations.
 
-This module will handle model explainability (SHAP, feature importance). See [ML_WORKFLOW.md](../../docs/ML_WORKFLOW.md).
+```bash
+python -m ml.explainability [--model-version xgboost-v1 ...]   # writes shap_global.json per artifact
+```
+
+`explain.py`: `Explainer` (Tree explainer for RF/XGBoost, Linear explainer for LR) for local per-prediction
+contributions, plus global mean-|SHAP| importance on a validation sample. Units: log-odds (LR, XGBoost) or
+probability (RF); contributions add up to the model output (tested). SHAP describes model behaviour, not
+causes.

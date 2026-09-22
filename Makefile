@@ -1,22 +1,41 @@
-# Makefile
+# Makefile — NEO-Guard backend + ML
+# Windows without `make`: run the underlying commands shown in each recipe.
+PY ?= python
 
-.PHONY: help setup test lint format
+.PHONY: help setup test lint format migrate run pipeline
 
 help:
-	@echo "Available commands:"
-	@echo "  make setup   - Install dependencies (future)"
-	@echo "  make test    - Run tests (future)"
-	@echo "  make lint    - Lint code (future)"
-	@echo "  make format  - Format code (future)"
+	@echo "make setup     - install dependencies (+ editable ml/app packages)"
+	@echo "make test      - run the test suite"
+	@echo "make lint      - ruff check"
+	@echo "make format    - ruff format"
+	@echo "make migrate   - alembic upgrade head (needs DATABASE_URL)"
+	@echo "make run       - start the API on http://localhost:8000"
+	@echo "make pipeline  - ingest -> validate -> preprocess -> train -> evaluate -> explain"
 
 setup:
-	@echo "Setup placeholder – implement dependency installation later"
+	$(PY) -m pip install -r backend/requirements-dev.txt
+	$(PY) -m pip install -e . --no-deps
 
 test:
-	@echo "Test placeholder – implement test suite later"
+	$(PY) -m pytest
 
 lint:
-	@echo "Lint placeholder – implement linting later"
+	$(PY) -m ruff check ml backend tests
 
 format:
-	@echo "Format placeholder – implement code formatting later"
+	$(PY) -m ruff format ml backend tests
+
+migrate:
+	alembic -c backend/alembic.ini upgrade head
+
+run:
+	uvicorn app.main:app --reload
+
+pipeline:
+	$(PY) -m ml.ingestion
+	$(PY) -m ml.validation
+	$(PY) -m ml.preprocessing
+	$(PY) -m ml.training
+	$(PY) -m ml.evaluation
+	$(PY) -m ml.explainability

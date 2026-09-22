@@ -1,0 +1,56 @@
+{
+  "model_version": "random_forest_balanced-v1",
+  "split": "validation",
+  "n_rows": 2000,
+  "output_space": "probability",
+  "background_mean": [
+    1.7718592804472484,
+    0.43876054417334037,
+    12.20115951494176,
+    0.9153584345408402,
+    2.6283601263536567,
+    0.04790942350907653,
+    -0.02000597565921512,
+    -0.012642543378934425,
+    -0.0012444378916392292
+  ],
+  "importance": [
+    {
+      "feature": "perihelion_distance_au",
+      "mean_abs_shap": 0.12082692347925772
+    },
+    {
+      "feature": "eccentricity",
+      "mean_abs_shap": 0.07541844214393137
+    },
+    {
+      "feature": "inclination_deg",
+      "mean_abs_shap": 0.06012457692124956
+    },
+    {
+      "feature": "argument_of_perihelion_cos",
+      "mean_abs_shap": 0.028459497433346026
+    },
+    {
+      "feature": "aphelion_distance_au",
+      "mean_abs_shap": 0.025491292995999705
+    },
+    {
+      "feature": "argument_of_perihelion_sin",
+      "mean_abs_shap": 0.02375727502995948
+    },
+    {
+      "feature": "semi_major_axis_au",
+      "mean_abs_shap": 0.0233760740657046
+    },
+    {
+      "feature": "ascending_node_sin",
+      "mean_abs_shap": 0.018550094559817043
+    },
+    {
+      "feature": "ascending_node_cos",
+      "mean_abs_shap": 0.017044679999383184
+    }
+  ],
+  "caveat": "Model-behaviour attribution, not causal evidence about asteroids."
+}

@@ -1,46 +1,89 @@
 # NEO‑Guard
 
-**Project:** Explainable Machine Learning System for Near‑Earth Object (NEO) Classification and Close‑Approach Analysis
+**Explainable Machine Learning System for Near‑Earth Object (NEO) Classification and Close‑Approach Analysis**
 
 ## Status
 
-**FOUNDATION PHASE** – Repository scaffold and documentation only. No code implementation yet.
+**Backend + ML: IMPLEMENTED. Frontend: IMPLEMENTED. CI: IMPLEMENTED. Deployment: NOT DONE (Render/Vercel
+not yet attempted).**
+Real NASA/JPL data is ingested, validated, stored in PostgreSQL and served by a FastAPI API; six
+experimental models were trained and evaluated; a React + Vite frontend consumes the API end to end.
+See [`docs/HANDOFF.md`](docs/HANDOFF.md), [`docs/VERIFICATION_REPORT.md`](docs/VERIFICATION_REPORT.md)
+and [`docs/RELEASE_REPORT.md`](docs/RELEASE_REPORT.md) for the full status.
 
 ## Architecture
 
 ```
-NASA/JPL → Data Ingestion → Validation → Preprocessing → Feature Engineering → ML Training → Evaluation → Model Registry → Inference API → Backend → Frontend
+NASA/JPL (SBDB, CAD) → ingestion → validation → preprocessing → features → training → evaluation → registry → FastAPI → React frontend
+  [implemented]            [implemented all stages]                                          [implemented]
 ```
-*(All components are **PLANNED** and not implemented.)*
 
-## Planned Features
-- Real NEO data ingestion from NASA/JPL sources
-- Data validation & preprocessing pipelines
-- Feature engineering with strict leakage prevention
-- Baseline ML models (Logistic Regression, Random Forest) and advanced models (XGBoost, LightGBM)
-- Explainable AI (SHAP, etc.)
-- FastAPI inference service
-- PostgreSQL persistence
-- React + Vite frontend with Apple‑inspired design
-- Dockerised development environment
-- CI/CD with GitHub Actions
+## What it does
 
-## Technology Stack (planned)
+* Ingests **42,477 near‑Earth asteroids** and **30,828 predicted Earth close approaches** from the JPL SBDB Query and
+  CAD APIs (no API key needed) with immutable raw snapshots and provenance.
+* Trains Logistic Regression, Random Forest and XGBoost to predict JPL's **PHA flag** from orbital elements only,
+  under a leakage audit and a chronological split, with SHAP explanations.
+* Serves NEO data, close approaches, analytics, model metadata and predictions through a documented REST API
+  (`/docs`, `/openapi.json`).
+
+## Results, honestly
+
+The models beat chance but are **weak**: best on validation is `random_forest-v1` (test PR‑AUC 0.146 vs a 0.013 no‑skill
+level, ROC‑AUC 0.898, precision 0.118, recall 0.391; only 64 positives in the test set). They cannot see the absolute magnitude
+`H` (half of the PHA definition, excluded to avoid leakage) and they miss famous PHAs such as Apophis. All models are
+`experimental`. Details: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md), [`docs/MODEL_CARD.md`](docs/MODEL_CARD.md),
+[`docs/LIMITATIONS.md`](docs/LIMITATIONS.md). **This is not an impact‑prediction system.**
+
+## Quick start
+
+```bash
+python -m venv .venv && source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r backend/requirements-dev.txt && pip install -e . --no-deps
+cp .env.example .env                                        # set DATABASE_URL and POSTGRES_PASSWORD
+
+# 1. data + models (real JPL data)
+python -m ml.ingestion && python -m ml.validation && python -m ml.preprocessing
+python -m ml.training && python -m ml.evaluation && python -m ml.explainability
+
+# 2. database + API
+docker compose up -d db
+alembic -c backend/alembic.ini upgrade head
+python -m app.cli load-data && python -m app.cli sync-models
+uvicorn app.main:app --reload                               # http://localhost:8000/docs
 ```
-Python, FastAPI, scikit‑learn, XGBoost, SHAP, PostgreSQL
-React, Vite, Tailwind CSS, Stitch (design system)
-Docker, docker‑compose, GitHub Actions
+
+Everything in Docker: `docker compose up -d --build` (db + migrations + backend). Tests: `pytest` (139 pass with a
+PostgreSQL test DB). Commands are described in [`docs/DATA_PIPELINE.md`](docs/DATA_PIPELINE.md) and
+[`backend/README.md`](backend/README.md).
+
+```bash
+# 3. frontend (needs the API running above)
+cd frontend && npm install
+cp .env.example .env                                        # VITE_API_BASE_URL, defaults to http://localhost:8000
+npm run dev                                                  # http://localhost:5173
 ```
-*No packages are installed yet; these are future choices.*
 
-## Scientific Integrity
-The project adheres to strict scientific integrity principles. See [SCIENTIFIC_INTEGRITY.md](docs/SCIENTIFIC_INTEGRITY.md).
+Frontend commands (typecheck/lint/test/build): [`frontend README`](frontend) and `package.json`. CI runs the same
+checks on every push/PR: [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
-## Development Workflow
-Implementation proceeds in controlled phases (see [DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md)).
+## Technology
 
-## Data
-Authoritative NASA/JPL sources will be used wherever possible. See [DATA_SOURCE.md](docs/DATA_SOURCE.md) for the policy.
+Python 3.12 · FastAPI · Pydantic · SQLAlchemy · Alembic · PostgreSQL · httpx · scikit‑learn · XGBoost · SHAP · pytest · Docker.
+React 18 · Vite · TypeScript · TailwindCSS · React Query · Recharts · Vitest (frontend). GitHub Actions (CI).
+Planned: Vercel/Render (deployment).
 
----
-*This README is a placeholder; detailed documentation resides in the `docs/` directory.*
+## Scientific integrity
+
+No fabricated data, metrics or claims; synthetic data exists only in tests and is labelled `SYNTHETIC / TEST DATA`.
+See [`docs/SCIENTIFIC_INTEGRITY.md`](docs/SCIENTIFIC_INTEGRITY.md) and the open scientific question in
+[`docs/DATA_LEAKAGE.md`](docs/DATA_LEAKAGE.md).
+
+## Documentation
+
+[Architecture](docs/ARCHITECTURE.md) · [Data source](docs/DATA_SOURCE.md) · [Data dictionary](docs/DATA_DICTIONARY.md) ·
+[Pipeline](docs/DATA_PIPELINE.md) · [Leakage](docs/DATA_LEAKAGE.md) · [Features](docs/FEATURE_POLICY.md) ·
+[ML workflow](docs/ML_WORKFLOW.md) · [Model card](docs/MODEL_CARD.md) · [Experiments](docs/EXPERIMENTS.md) ·
+[API](docs/API_CONTRACT.md) · [Database](docs/DATABASE_SCHEMA.md) · [Frontend contract](docs/FRONTEND_CONTRACT.md) ·
+[Security](docs/SECURITY.md) · [Testing](docs/TESTING.md) · [Deployment](docs/DEPLOYMENT.md) ·
+[Limitations](docs/LIMITATIONS.md) · [Changelog](docs/CHANGELOG.md) · [Handoff](docs/HANDOFF.md)

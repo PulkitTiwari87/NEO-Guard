@@ -1,53 +1,65 @@
-# docker-compose.yml
-# NEO-Guard Development Environment
+# docker-compose.yml — NEO-Guard development environment (backend + PostgreSQL).
+# Frontend is intentionally absent: it is implemented in a later phase.
 #
-# STATUS: PLACEHOLDER -- services are NOT implemented yet.
-# This file documents the planned service architecture for future implementation.
+#   cp .env.example .env        # then set POSTGRES_PASSWORD (and DATABASE_URL for host-side tools)
+#   docker compose up -d --build
+#   curl http://localhost:8000/api/health
+#
+# Data/model setup (host side, after `docker compose up -d db migrate`):
+#   python -m app.cli load-data && python -m app.cli sync-models
+name: neoguard
 
-version: "3.9"
+x-backend-build: &backend-build
+  context: .
+  dockerfile: backend/Dockerfile
+
+x-backend-env: &backend-env
+  DATABASE_URL: postgresql://neoguard:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/neoguard
+  MODEL_ENV: ${MODEL_ENV:-development}
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+  CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+  MODEL_DIR: /app/ml/artifacts
+  ACTIVE_MODEL_VERSION: ${ACTIVE_MODEL_VERSION:-}
+  RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-120}
 
 services:
-  # -- Backend API --
-  # PLANNED: FastAPI application serving the inference API.
-  # Will be implemented in Phase 2 (Claude Code).
-  #
-  # backend:
-  #   build: ./backend
-  #   ports:
-  #     - "8000:8000"
-  #   env_file: .env
-  #   depends_on:
-  #     - db
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: neoguard
+      POSTGRES_USER: neoguard
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5432}:5432"  # change if 5432 is taken on your machine
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U neoguard -d neoguard"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
-  # -- PostgreSQL --
-  # PLANNED: Primary data store for NEO records, predictions,
-  # model metadata, and experiment tracking.
-  #
-  # db:
-  #   image: postgres:16-alpine
-  #   environment:
-  #     POSTGRES_DB: neoguard
-  #     POSTGRES_USER: neoguard
-  #     POSTGRES_PASSWORD: changeme
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
+  migrate:
+    build: *backend-build
+    command: ["alembic", "upgrade", "head"]
+    environment: *backend-env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
 
-  # -- Frontend --
-  # PLANNED: React + Vite frontend.
-  # Will be implemented in Phase 3 (Antigravity).
-  #
-  # frontend:
-  #   build: ./frontend
-  #   ports:
-  #     - "5173:5173"
-  #   depends_on:
-  #     - backend
+  backend:
+    build: *backend-build
+    environment: *backend-env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ml/artifacts:/app/ml/artifacts:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
 
-  placeholder:
-    image: alpine
-    command: echo "NEO-Guard services are not yet implemented."
-
-# volumes:
-#   pgdata:
+volumes:
+  pgdata:

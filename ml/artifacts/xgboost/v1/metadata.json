@@ -1,0 +1,164 @@
+{
+  "model_name": "xgboost",
+  "model_version": "xgboost-v1",
+  "artifact_path": "xgboost/v1",
+  "algorithm": "xgboost",
+  "class_weight": "none",
+  "status": "experimental",
+  "created_at": "2026-09-21T13:04:58.858168+00:00",
+  "experiment_id": "EXP-20260921T130458Z-xgboost-v1",
+  "dataset_version": "jpl-sbdb-neo-20260921-c34b5103",
+  "feature_version": "features-v1",
+  "target": "is_potentially_hazardous",
+  "raw_features": [
+    "semi_major_axis_au",
+    "eccentricity",
+    "inclination_deg",
+    "perihelion_distance_au",
+    "aphelion_distance_au",
+    "ascending_node_deg",
+    "argument_of_perihelion_deg"
+  ],
+  "features": [
+    "semi_major_axis_au",
+    "eccentricity",
+    "inclination_deg",
+    "perihelion_distance_au",
+    "aphelion_distance_au",
+    "ascending_node_sin",
+    "ascending_node_cos",
+    "argument_of_perihelion_sin",
+    "argument_of_perihelion_cos"
+  ],
+  "parameters": {
+    "objective": "binary:logistic",
+    "base_score": null,
+    "booster": null,
+    "callbacks": null,
+    "colsample_bylevel": null,
+    "colsample_bynode": null,
+    "colsample_bytree": 0.8,
+    "device": null,
+    "early_stopping_rounds": null,
+    "enable_categorical": true,
+    "eval_metric": "aucpr",
+    "feature_types": null,
+    "feature_weights": null,
+    "gamma": null,
+    "grow_policy": null,
+    "importance_type": null,
+    "interaction_constraints": null,
+    "learning_rate": 0.1,
+    "max_bin": null,
+    "max_cat_threshold": null,
+    "max_cat_to_onehot": null,
+    "max_delta_step": null,
+    "max_depth": 6,
+    "max_leaves": null,
+    "min_child_weight": null,
+    "missing": "nan",
+    "monotone_constraints": null,
+    "multi_strategy": null,
+    "n_estimators": 300,
+    "n_jobs": -1,
+    "num_parallel_tree": null,
+    "random_state": 42,
+    "reg_alpha": null,
+    "reg_lambda": null,
+    "sampling_method": null,
+    "scale_pos_weight": 1.0,
+    "subsample": 0.8,
+    "tree_method": "hist",
+    "validate_parameters": null,
+    "verbosity": null
+  },
+  "random_seed": 42,
+  "threshold": 0.32446548342704773,
+  "threshold_selection": "maximises F1 on the validation split",
+  "split": {
+    "method": "chronological by first_obs_year (whole years per split)",
+    "cutoffs": {
+      "train_last_year": 2022,
+      "validation_last_year": 2024
+    },
+    "train": {
+      "rows": 31545,
+      "positives": 2372,
+      "positive_rate": 0.07519416706292598,
+      "first_obs_year_min": 1893,
+      "first_obs_year_max": 2022
+    },
+    "validation": {
+      "rows": 5790,
+      "positives": 113,
+      "positive_rate": 0.019516407599309154,
+      "first_obs_year_min": 2023,
+      "first_obs_year_max": 2024
+    },
+    "test": {
+      "rows": 5016,
+      "positives": 64,
+      "positive_rate": 0.012759170653907496,
+      "first_obs_year_min": 2025,
+      "first_obs_year_max": 2026
+    }
+  },
+  "metrics": {
+    "validation": {
+      "n": 5790,
+      "n_positive": 113,
+      "prevalence": 0.019516407599309154,
+      "threshold": 0.32446548342704773,
+      "accuracy": 0.9578583765112263,
+      "precision": 0.1895734597156398,
+      "recall": 0.35398230088495575,
+      "f1": 0.24691358024691357,
+      "roc_auc": 0.8833937905007162,
+      "pr_auc": 0.144955377196323,
+      "confusion_matrix": {
+        "tn": 5506,
+        "fp": 171,
+        "fn": 73,
+        "tp": 40
+      }
+    },
+    "test": {
+      "n": 5016,
+      "n_positive": 64,
+      "prevalence": 0.012759170653907496,
+      "threshold": 0.32446548342704773,
+      "accuracy": 0.9623205741626795,
+      "precision": 0.13872832369942195,
+      "recall": 0.375,
+      "f1": 0.20253164556962025,
+      "roc_auc": 0.8777198606623586,
+      "pr_auc": 0.15216698951412574,
+      "confusion_matrix": {
+        "tn": 4803,
+        "fp": 149,
+        "fn": 40,
+        "tp": 24
+      },
+      "bootstrap_ci": {
+        "method": "percentile bootstrap, 95%",
+        "n_resamples": 1000,
+        "seed": 42,
+        "roc_auc": [
+          0.8456934918571865,
+          0.9099095663580491
+        ],
+        "pr_auc": [
+          0.08851408931285525,
+          0.24572776525057508
+        ]
+      }
+    }
+  },
+  "libraries": {
+    "python": "3.12.6",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1"
+  }
+}

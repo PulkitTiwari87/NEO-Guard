@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ──────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-canvas text-white font-sans antialiased;
+    min-height: 100dvh;
+    background-image:
+      linear-gradient(to right, rgba(0, 242, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 242, 255, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Focus ring — visible but not intrusive */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-canvas;
+  }
+
+  /* Scrollbar — subtle dark theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-canvas;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Number input — remove spinners in WebKit */
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  /* Select styling */
+  select {
+    @apply appearance-none;
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ─── Utilities ─────────────────────────────────────────────────────────────── */
+
+@layer utilities {
+  .hover\:bg-white\/3:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  /* HUD corner tick marks — command-console panel treatment (Phase 3.5 design system) */
+  .hud-bracket {
+    position: relative;
+  }
+  .hud-bracket::before,
+  .hud-bracket::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    pointer-events: none;
+  }
+  .hud-bracket::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1.5px solid rgba(0, 242, 255, 0.5);
+    border-left: 1.5px solid rgba(0, 242, 255, 0.5);
+  }
+  .hud-bracket::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 1.5px solid rgba(0, 242, 255, 0.5);
+    border-right: 1.5px solid rgba(0, 242, 255, 0.5);
+  }
+}
